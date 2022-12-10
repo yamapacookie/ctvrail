@@ -27,14 +27,14 @@ class CallExecuteJob < ApplicationJob
       t = Time.now.to_i / 3600
       hnow = Time.at(t * 3600)
 
-      p "現在時間は"
+      puts "現在時間は"
       p hnow
 
       # 一時停止判定と、指定時間かを判定
       if Setting.find(1)[:suspension] && table.include?(hnow) then
 
         # 条件判定確認用メッセージ
-        p "登録時間を満たしています"
+        puts "登録時間を満たしています"
 
         #失敗した場合の保険
         begin
@@ -61,11 +61,11 @@ class CallExecuteJob < ApplicationJob
 
           sleep 3
 
-          p "ログインしました"
+          puts "ログインしました"
 
           driver.navigate.to 'https://cytube.xyz/r/' + channel  # 動画ページ移動
 
-          p "登録ページに移動します。"
+          puts "登録ページに移動します。"
 
           # プレイリスト入れ替えの判定用のメソッド
           def checkcal(interval,time)
@@ -175,11 +175,14 @@ EOS
           end
 
           # 現在のプレイリストの動画要素へアクセス
+          puts 'プレイリストの動画要素へアクセスします'
           cylist = []
           cylist = driver.find_elements(:xpath ,"//ul[@id='queue']/li/a")
 
           # cylist配列が空ではない確認
           if cylist.any? then
+
+            puts 'cylistが空ではないので、アドレスを確認します。'
 
             # アドレスを取得
             cylist = cylist.map{|x| x.attribute('href')}
@@ -188,6 +191,8 @@ EOS
             cylist = cylist.map{|x| x.sub(/http:/,"https:")}
             cylist = cylist.map{|x| x.sub(/\/\/youtube\.com/,"//www.youtube.com")}
             cylist = cylist.map{|x| x.sub(/\/\/youtu\.be/,"www.youtube.com")}
+
+            p cylist
 
           end # cylist.any?終了
 
@@ -206,7 +211,7 @@ EOS
           up.delete("updated_at")
           uptem = up.to_a
 
-          p "補正枠の配列化データ"
+          puts "補正枠の配列化データ"
           p uptem
 
           # 動画データベースからランダムにアドレスとタグの二次元配列呼び出し
