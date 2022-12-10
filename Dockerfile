@@ -29,4 +29,4 @@ RUN bundle install
 
 COPY . /app
 
-CMD ["bundle", "exec", "puma"]
+CMD ["bundle", "exec", "sidekiq"]
