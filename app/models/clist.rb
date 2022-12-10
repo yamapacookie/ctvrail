@@ -1,0 +1,2 @@
+class Clist < ApplicationRecord
+end
