@@ -118,7 +118,7 @@ class CallExecuteJob < ApplicationJob
           # もし総入れ替えの時間の場合、プレイリストをクリアする
           if check then
 
-              p "総入れ替えを行います"
+              puts "総入れ替えを行います"
 
               # プレイリストのID番号を取得する
               if driver.find_elements(:class => 'queue_entry').any? then
@@ -176,6 +176,7 @@ EOS
 
           # 現在のプレイリストの動画要素へアクセス
           puts 'プレイリストの動画要素へアクセスします'
+
           cylist = []
           cylist = driver.find_elements(:xpath ,"//ul[@id='queue']/li/a")
 
@@ -197,6 +198,9 @@ EOS
           end # cylist.any?終了
 
           # 制限枠タグの参照データをテーブルから取得
+
+          puts '制限枠のタグデータをDBから取得します'
+
           tt = JSON.parse(Tagtemp.find(1).to_json)
           tt.delete("id")
           tt.delete("none")
@@ -205,13 +209,16 @@ EOS
           tagtem = tt
 
           # 補正枠タグの参照データをテーブルから取得
+
+          puts '補正枠のタグデータをDBから取得します'
+
           up = Uptemp.find(1).attributes
           up.delete("id")
           up.delete("created_at")
           up.delete("updated_at")
           uptem = up.to_a
 
-          puts "補正枠の配列化データ"
+          puts "下記は補正枠の配列化データです"
           p uptem
 
           # 動画データベースからランダムにアドレスとタグの二次元配列呼び出し
