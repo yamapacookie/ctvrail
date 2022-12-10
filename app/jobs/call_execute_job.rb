@@ -151,7 +151,7 @@ EOS
 
               list_size = driver.find_element(:id, 'plcount').text.to_i
 
-              p "総クリア後のプレイリスト数"
+              puts "総クリア後のプレイリスト数"
               p list_size
 
           else
@@ -159,7 +159,7 @@ EOS
             # プレイリスト数を取得する
             list_size = driver.find_element(:id, 'plcount').text.to_i
 
-            p "プレイリスト数"
+            puts "プレイリスト数"
             p list_size
 
           end # 総入れ替えここまで
@@ -554,8 +554,6 @@ EOS
         end
 
         puts "botの全作業を終了します"
-
-        exit
 
         bot.run
 
