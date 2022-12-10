@@ -106,7 +106,7 @@ class CallExecuteJob < ApplicationJob
           end #checkcal定義終了
 
           # 表示に時間がかかるので長めに30秒待機
-          sleep 30
+          sleep 40
 
           # 設定日、設定時間かのチェック
           check = checkcal(intrvl,hour)
@@ -424,7 +424,7 @@ EOS
 
 
       # 23時かどうかを調べて自動報告用のbot起動
-      if Setting.find(1)[:suspension] && hnow == Time.parse("23:00") then
+      if Setting.find(1)[:suspension] && hnow == Time.parse("5:00") then
 
         # bot準備
         require 'discordrb'
