@@ -4,9 +4,6 @@ class CallExecuteJob < ApplicationJob
       # 起動メッセージ
       puts "定期実行を開始します"
 
-      p Uptemp.find(1)
-      p Tagtemp.all
-
       # 初期値
       max = Setting.find(1)[:playlist] #プレイリストに登録する上限数
       channel = ENV['CYTUBE_CHANNEL']  #　Cytubeチャンネル
@@ -18,8 +15,9 @@ class CallExecuteJob < ApplicationJob
       url = "https://cytube.xyz/r/" + channel # チャンネルのアドレス
       bot_token = ENV['DISCORD_BOT_TOKEN'] # Discordbotのtoken
       bot_chan = ENV['BOT_COMMENT_CHANNEL'] # Botの報告するチャンネル先
-      tagtemp1 = Tagtemp.find(1)
-      uptemp1 = Uptemp.find(1)
+      tagtemp1 = Tagtemp.find(1) # 制限タグ
+      uptemp1 = Uptemp.find(1) #補正タグ
+      clists = Clist.all
       ENV['TZ'] = "Asia/Tokyo"  # タイムゾーン設定
 
       require 'time'
@@ -231,10 +229,10 @@ EOS
           p uptem
 
           # 動画データベースからランダムにアドレスとタグの二次元配列呼び出し
-          ary = Clist.where.not(available: false).pluck(:address,:tag)
+          ary = clists.where.not(available: false).pluck(:address,:tag)
 
           # 再生不能疑惑のある動画を一端配列から除去する
-          sus_ary = Clist.where("(status = ?) OR (status = ?)","susp1","susp2").pluck(:address,:tag)
+          sus_ary = clists.where("(status = ?) OR (status = ?)","susp1","susp2").pluck(:address,:tag)
           ary = ary - sus_ary
 
           # 各動画のタグつき動画の数をカウントする
@@ -249,7 +247,7 @@ EOS
           # 補正枠タグのデータから実際の重みデータを算出
           uhash = {}
           uptem.each do |u|
-            u1 = Clist.where(tag: u[0]).size.to_f #タグの動画数
+            u1 = clists.where(tag: u[0]).size.to_f #タグの動画数
             rate = u1 / ary_size  # タグの動画の全体に対する割合
             rate = rate * u[1] * 100
             uhash.store(u[0],rate.to_i)  # 補正された割合の組（千分率）
@@ -314,7 +312,7 @@ EOS
           end
 
           # 再生不能疑惑のある動画を取得
-          suspicion = Clist.where("(status = ?) OR (status = ?)","susp1","susp2").pluck(:address)
+          suspicion = clists.where("(status = ?) OR (status = ?)","susp1","susp2").pluck(:address)
 
           # 登録数が少なくとも1つ以上のきのみ登録作業を行う
           if pcknum > 0 or suspicion.size > 0 then
@@ -426,11 +424,11 @@ EOS
                   idlist.each do |d|
 
                     # 誤検知を均すために三回連続して検知したものだけ無効化する
-                    if Clist.find_by(videoid: d).status == nil
+                    if clists.find_by(videoid: d).status == nil
                       Clist.find_by(videoid: d).update(status: "susp1")
-                    elsif Clist.find_by(videoid: d).status == "susp1"
+                    elsif clists.find_by(videoid: d).status == "susp1"
                       Clist.find_by(videoid: d).update(status: "susp2")
-                    elsif Clist.find_by(videoid: d).status == "susp2"
+                    elsif clists.find_by(videoid: d).status == "susp2"
                       Clist.find_by(videoid: d).update(available: false, status: "invalid")
 
                     end # if Clist.find_by
