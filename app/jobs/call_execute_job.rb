@@ -200,6 +200,7 @@ EOS
           # 制限枠タグの参照データをテーブルから取得
 
           puts '制限枠のタグデータをDBから取得します'
+          p Tagtemp.find(1)
 
           tt = JSON.parse(Tagtemp.find(1).to_json)
           tt.delete("id")
@@ -207,6 +208,8 @@ EOS
           tt.delete("created_at")
           tt.delete("updated_at")
           tagtem = tt
+
+          puts '制限枠データを取得しました。'
 
           # 補正枠タグの参照データをテーブルから取得
 
@@ -447,7 +450,7 @@ EOS
 
 
       # 23時かどうかを調べて自動報告用のbot起動
-      if Setting.find(1)[:suspension] && hnow == Time.parse("5:00") then
+      if Setting.find(1)[:suspension] && hnow == Time.parse("6:00") then
 
         # bot準備
         require 'discordrb'
