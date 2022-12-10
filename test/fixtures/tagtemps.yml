@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  krnkamn: 1
+  mimi: 1
+  vtuber: 1
+  gamecast: 1
+  longcast: 1
+  midcast: 1
+  asmr: 1
+  none: 1
+  series: 1
+
+two:
+  krnkamn: 1
+  mimi: 1
+  vtuber: 1
+  gamecast: 1
+  longcast: 1
+  midcast: 1
+  asmr: 1
+  none: 1
+  series: 1

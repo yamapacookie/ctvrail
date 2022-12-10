@@ -1,0 +1,2 @@
+class Tagtemp < ApplicationRecord
+end

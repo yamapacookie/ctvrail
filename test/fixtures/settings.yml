@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  preparation: 1
+  playlist: 1
+  intervaltime: 1
+  suspension: false
+  swaptime: 1
+  intervaldays: 1
+
+two:
+  preparation: 1
+  playlist: 1
+  intervaltime: 1
+  suspension: false
+  swaptime: 1
+  intervaldays: 1
