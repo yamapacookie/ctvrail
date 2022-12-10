@@ -2,7 +2,7 @@ class CallExecuteJob < ApplicationJob
     def perform
       
       # 起動メッセージ
-      puts "Regular execution run!"
+      puts "定期実行を開始します。"
 
       # 初期値
       max = Setting.find(1)[:playlist] #プレイリストに登録する上限数
@@ -61,7 +61,11 @@ class CallExecuteJob < ApplicationJob
 
           sleep 3
 
+          p "ログインしました"
+
           driver.navigate.to 'https://cytube.xyz/r/' + channel  # 動画ページ移動
+
+          p "登録ページに移動します。"
 
           # プレイリスト入れ替えの判定用のメソッド
           def checkcal(interval,time)
@@ -105,7 +109,7 @@ class CallExecuteJob < ApplicationJob
 
           end #checkcal定義終了
 
-          # 表示に時間がかかるので長めに30秒待機
+          # 表示に時間がかかるので長めに40秒待機
           sleep 40
 
           # 設定日、設定時間かのチェック
@@ -113,6 +117,8 @@ class CallExecuteJob < ApplicationJob
 
           # もし総入れ替えの時間の場合、プレイリストをクリアする
           if check then
+
+              p "総入れ替えを行います"
 
               # プレイリストのID番号を取得する
               if driver.find_elements(:class => 'queue_entry').any? then
@@ -144,6 +150,9 @@ EOS
             end #ID取得終了
 
               list_size = driver.find_element(:id, 'plcount').text.to_i
+
+              p "総クリア後のプレイリスト数"
+              p list_size
 
           else
 
@@ -417,7 +426,7 @@ EOS
         rescue #失敗時の保険用のリトライ
 
           p "なんらかのエラーで弾かれてるので再度登録を行おうとしています"
-          sleep 180
+          sleep 50
           p "リトライを行います"
           retry
         end
