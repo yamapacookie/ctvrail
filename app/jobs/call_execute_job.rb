@@ -1,5 +1,5 @@
 class CallExecuteJob < ApplicationJob
     def perform
-      puts '定期実行成功'
+      puts 'congraturation regular execution!!'
     end
   end
