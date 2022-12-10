@@ -205,7 +205,9 @@ EOS
           # 制限枠タグの参照データをテーブルから取得
 
           puts '制限枠のタグデータをDBから取得します'
-
+          puts 'ここでエラーが発生しています'
+          p Tagtemp.find(1)
+          puts '意味がわからへん'
 
           tt = JSON.parse(Tagtemp.find(1).to_json)
           tt.delete("id")
