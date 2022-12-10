@@ -4,6 +4,9 @@ class CallExecuteJob < ApplicationJob
       # 起動メッセージ
       puts "定期実行を開始します"
 
+      p Uptemp.find(1)
+      p Tagtemp.all
+
       # 初期値
       max = Setting.find(1)[:playlist] #プレイリストに登録する上限数
       channel = ENV['CYTUBE_CHANNEL']  #　Cytubeチャンネル
@@ -202,8 +205,7 @@ EOS
           # 制限枠タグの参照データをテーブルから取得
 
           puts '制限枠のタグデータをDBから取得します'
-          p Uptemp.find(1)
-          p Tagtemp.all
+
 
           tt = JSON.parse(Tagtemp.find(1).to_json)
           tt.delete("id")
