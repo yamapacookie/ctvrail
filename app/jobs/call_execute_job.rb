@@ -2,7 +2,7 @@ class CallExecuteJob < ApplicationJob
     def perform
       
       # 起動メッセージ
-      puts "定期実行を開始します。"
+      puts "定期実行を開始します"
 
       # 初期値
       max = Setting.find(1)[:playlist] #プレイリストに登録する上限数
@@ -65,7 +65,7 @@ class CallExecuteJob < ApplicationJob
 
           driver.navigate.to 'https://cytube.xyz/r/' + channel  # 動画ページ移動
 
-          puts "登録ページに移動します。"
+          puts "登録ページに移動します"
 
           # プレイリスト入れ替えの判定用のメソッド
           def checkcal(interval,time)
@@ -237,7 +237,7 @@ EOS
           tag_name = tagtem.keys  # 制限和タグの名前配列
           tempnum = []  # タグ別の出現数
 
-          p "呼び出し配列数"
+          puts "呼び出し配列数"
           p ary.size
 
           # 補正枠タグのデータから実際の重みデータを算出
@@ -249,9 +249,9 @@ EOS
             uhash.store(u[0],rate.to_i)  # 補正された割合の組（千分率）
           end
 
-          p "uhashの値"
+          puts "uhashの値"
           p uhash
-          p "必要計算前のtagtem"
+          puts "必要計算前のtagtem"
           p tagtem
 
           # 補正タグの数値と合成して、各割合の枠を確定する
@@ -289,11 +289,11 @@ EOS
 
           end
 
-          p "以下が元の重みデータ"
+          puts "以下が元の重みデータ"
           p tagtem
-          p "以下が算出された重みデータ"
+          puts "以下が算出された重みデータ"
           p thash
-          p "登録されるべきプレイリストのサイズ"
+          puts "登録されるべきプレイリストのサイズ"
           p pcknum
 
           # 重みのハッシュを参照して、タグを重みに翻訳
@@ -336,7 +336,7 @@ EOS
             # 死んだ疑惑の動画を検出し、リストに加える
             playlist = playlist + suspicion
 
-            p "今から登録する予定の動画リストです"
+            puts "今から登録する予定の動画リストです"
             p playlist
 
           # 登録
@@ -367,7 +367,7 @@ EOS
 
             # 保険的に動画数の1割程度の時間待機
             sleep playlist.size * 0.1
-            p "登録を完了しました。"
+            puts "登録を完了しました。"
 
             end #登録終了
 
@@ -412,7 +412,7 @@ EOS
 
                 end
 
-                p "無効な動画のID一覧"
+                puts "無効な動画のID一覧"
                 p idlist
 
                 # idリストからデータベースを検索、該当項目の生存を無効に変更
@@ -440,9 +440,10 @@ EOS
 
         rescue #失敗時の保険用のリトライ
 
-          p "なんらかのエラーで弾かれてるので再度登録を行おうとしています"
+          puts "なんらかのエラーで弾かれてるので再度登録を行おうとしています"
           sleep 50
-          p "リトライを行います"
+          puts "リトライを行います"
+
           retry
         end
 
@@ -453,6 +454,9 @@ EOS
       if Setting.find(1)[:suspension] && hnow == Time.parse("6:00") then
 
         # bot準備
+
+        puts 'bot起動の判定を満たすので、botを起動します'
+
         require 'discordrb'
         bot = Discordrb::Bot.new token:ENV['DISCORD_BOT_TOKEN']
 
@@ -535,25 +539,27 @@ EOS
             bot.send_message(ENV['BOT_COMMENT_CHANNEL'], comment)
           end
 
-          p "botの報告作業を完了しました"
+          puts "botの報告作業を完了しました"
 
           # ステータスを平常に戻す
           Clist.where(status: "new").update_all(status: nil)
 
         end # 動画報告条件終了
 
+        puts "動画報告を終了します"
+
         # 容疑動画をクリア
         if ary_susp.any? then
           Clist.where("(status = ?) OR (status = ?)","susp1","susp2").update_all(status: nil)
         end
+
+        puts "botの全作業を終了します"
 
         exit
 
         bot.run
 
       end #bot終了
-
-#rails runner lib/script/register.rb で動作
 
     end
 end
