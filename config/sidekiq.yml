@@ -1,0 +1,4 @@
+:schedule:
+  call_excute:
+    every: '3m'
+    class: CallExcuteJob
