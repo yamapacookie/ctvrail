@@ -18,6 +18,8 @@ class CallExecuteJob < ApplicationJob
       url = "https://cytube.xyz/r/" + channel # チャンネルのアドレス
       bot_token = ENV['DISCORD_BOT_TOKEN'] # Discordbotのtoken
       bot_chan = ENV['BOT_COMMENT_CHANNEL'] # Botの報告するチャンネル先
+      Tagtemp.find(1) = tagtemp1
+      Uptemp.find(1) = uptemp1
       ENV['TZ'] = "Asia/Tokyo"  # タイムゾーン設定
 
       require 'time'
@@ -205,11 +207,8 @@ EOS
           # 制限枠タグの参照データをテーブルから取得
 
           puts '制限枠のタグデータをDBから取得します'
-          puts 'ここでエラーが発生しています'
-          p Tagtemp.find(1)
-          puts '意味がわからへん'
 
-          tt = JSON.parse(Tagtemp.find(1).to_json)
+          tt = JSON.parse(tagtemp1.to_json)
           tt.delete("id")
           tt.delete("none")
           tt.delete("created_at")
@@ -222,7 +221,7 @@ EOS
 
           puts '補正枠のタグデータをDBから取得します'
 
-          up = Uptemp.find(1).attributes
+          up = uptemp1.attributes
           up.delete("id")
           up.delete("created_at")
           up.delete("updated_at")
