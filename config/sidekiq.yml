@@ -1,4 +1,4 @@
 :schedule:
-  call_excute:
+  call_execute:
     every: '3m'
-    class: CallExcuteJob
+    class: CallExecuteJob
