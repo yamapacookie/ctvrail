@@ -27,7 +27,8 @@ class CallExecuteJob < ApplicationJob
       t = Time.now.to_i / 3600
       hnow = Time.at(t * 3600)
 
-      p "現在時間は" + hnow + "時"
+      p "現在時間は"
+      p hnow
 
       # 一時停止判定と、指定時間かを判定
       if Setting.find(1)[:suspension] && table.include?(hnow) then
