@@ -18,8 +18,8 @@ class CallExecuteJob < ApplicationJob
       url = "https://cytube.xyz/r/" + channel # チャンネルのアドレス
       bot_token = ENV['DISCORD_BOT_TOKEN'] # Discordbotのtoken
       bot_chan = ENV['BOT_COMMENT_CHANNEL'] # Botの報告するチャンネル先
-      Tagtemp.find(1) = tagtemp1
-      Uptemp.find(1) = uptemp1
+      tagtemp1 = Tagtemp.find(1)
+      uptemp1 = Uptemp.find(1)
       ENV['TZ'] = "Asia/Tokyo"  # タイムゾーン設定
 
       require 'time'
