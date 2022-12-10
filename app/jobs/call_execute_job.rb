@@ -13,6 +13,8 @@ class CallExecuteJob < ApplicationJob
       hour = Setting.find(1)[:swaptime]  # プレイリスト総入れ替えする時間
       inttime = Setting.find(1)[:intervaltime] #　補充時間間隔
       url = "https://cytube.xyz/r/" + channel # チャンネルのアドレス
+      bot_token = ENV['DISCORD_BOT_TOKEN'] # Discordbotのtoken
+      bot_chan = ENV['BOT_COMMENT_CHANNEL'] # Botの報告するチャンネル先
       ENV['TZ'] = "Asia/Tokyo"  # タイムゾーン設定
 
       require 'time'
@@ -436,6 +438,8 @@ EOS
 
           end #再生不可能動画の取得、無効化終了
 
+          puts 'ブラウザを終了します'
+
           driver.quit # ブラウザ終了
 
         rescue #失敗時の保険用のリトライ
@@ -451,14 +455,14 @@ EOS
 
 
       # 23時かどうかを調べて自動報告用のbot起動
-      if Setting.find(1)[:suspension] && hnow == Time.parse("4:00") then
+      if Setting.find(1)[:suspension] && hnow == Time.parse("7:00") then
 
         # bot準備
 
         puts 'bot起動の判定を満たすので、botを起動します'
 
         require 'discordrb'
-        bot = Discordrb::Bot.new token:ENV['DISCORD_BOT_TOKEN']
+        bot = Discordrb::Bot.new token:bot_token
 
         # 無効動画と新規投稿動画、無効疑い動画の取得
         ary_delete = Clist.where(status: "invalid").pluck(:title,:address)
@@ -536,7 +540,7 @@ EOS
 
           # 新規登録動画をコメント
           bary.each do |comment|
-            bot.send_message(ENV['BOT_COMMENT_CHANNEL'], comment)
+            bot.send_message(bot_chan, comment)
           end
 
           puts "botの報告作業を完了しました"
@@ -554,6 +558,8 @@ EOS
         end
 
         puts "botの全作業を終了します"
+
+        return
 
         bot.run
 
