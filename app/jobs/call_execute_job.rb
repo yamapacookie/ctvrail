@@ -312,6 +312,7 @@ EOS
             # 死んだ疑惑の動画を検出し、リストに加える
             playlist = playlist + suspicion
 
+            p "今から登録する予定の動画リストです"
             p playlist
 
           # 登録
@@ -335,13 +336,14 @@ EOS
 
             driver.execute_script(scriptQueue)
 
-            # おそらくcytubeが動画登録に1秒間隔なので余裕を持って1.1秒設定
-            sleep 1.1
+            # おそらくcytubeが動画登録に1秒間隔なので余裕を持って1.5秒設定
+            sleep 1.5
 
             end
 
             # 保険的に動画数の1割程度の時間待機
             sleep playlist.size * 0.1
+            p "登録を完了しました。"
 
             end #登録終了
 
@@ -508,6 +510,8 @@ EOS
           bary.each do |comment|
             bot.send_message(ENV['BOT_COMMENT_CHANNEL'], comment)
           end
+
+          p "botの報告作業を完了しました"
 
           # ステータスを平常に戻す
           Clist.where(status: "new").update_all(status: nil)
