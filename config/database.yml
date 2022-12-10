@@ -83,3 +83,4 @@ production:
   <<: *default
   database: railway
   url: <%= ENV["DATABASE_URL"] %>
+  reconnect: true

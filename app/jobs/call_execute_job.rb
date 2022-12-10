@@ -457,7 +457,7 @@ EOS
 
 
       # 23時かどうかを調べて自動報告用のbot起動
-      if Setting.find(1)[:suspension] && hnow == Time.parse("7:00") then
+      if Setting.find(1)[:suspension] && hnow == Time.parse("8:00") then
 
         # bot準備
 
