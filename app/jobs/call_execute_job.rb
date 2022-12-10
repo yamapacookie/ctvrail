@@ -13,6 +13,7 @@ class CallExecuteJob < ApplicationJob
       hour = Setting.find(1)[:swaptime]  # プレイリスト総入れ替えする時間
       inttime = Setting.find(1)[:intervaltime] #　補充時間間隔
       url = "https://cytube.xyz/r/" + channel # チャンネルのアドレス
+      ENV['TZ'] = "Asia/Tokyo"  # タイムゾーン設定
 
       require 'time'
 
@@ -25,6 +26,8 @@ class CallExecuteJob < ApplicationJob
       # 現在時間を１時間ごとに記述
       t = Time.now.to_i / 3600
       hnow = Time.at(t * 3600)
+
+      p "現在時間は" + hnow + "時"
 
       # 一時停止判定と、指定時間かを判定
       if Setting.find(1)[:suspension] && table.include?(hnow) then
