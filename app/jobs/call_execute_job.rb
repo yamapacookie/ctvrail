@@ -17,8 +17,8 @@ class CallExecuteJob < ApplicationJob
       bot_chan = ENV['BOT_COMMENT_CHANNEL'] # Botの報告するチャンネル先
       tagtemp1 = Tagtemp.find(1) # 制限タグ
       uptemp1 = Uptemp.find(1) #補正タグ
+      bottime = "11" #botの起動時間
       ENV['TZ'] = "Asia/Tokyo"  # タイムゾーン設定
-      ActiveRecord::Base.connection.close # コネクションを一旦切っておく
 
       require 'time'
 
@@ -43,6 +43,9 @@ class CallExecuteJob < ApplicationJob
 
         #失敗した場合の保険
         begin
+
+          # DBコネクションを一旦切っておく
+          ActiveRecord::Base.connection.close
 
           # selenium初期設定
           require 'selenium-webdriver'
@@ -228,6 +231,7 @@ EOS
           puts "下記は補正枠の配列化データです"
           p uptem
 
+          # データベースに再接続
           ActiveRecord::Base.establish_connection
 
           # 動画データベースからランダムにアドレスとタグの二次元配列呼び出し
@@ -375,6 +379,9 @@ EOS
             sleep playlist.size * 0.1
             puts "登録を完了しました。"
 
+            # DBコネクションを一旦切っておく
+            ActiveRecord::Base.connection.close
+
             end #登録終了
 
             # 再生不可能な動画リストの取得し、無効に変更
@@ -423,6 +430,10 @@ EOS
 
                 # idリストからデータベースを検索、該当項目の生存を無効に変更
                 if idlist.any? then
+                  
+                  # データベースに再接続
+                  ActiveRecord::Base.establish_connection
+                  
                   idlist.each do |d|
 
                     # 誤検知を均すために三回連続して検知したものだけ無効化する
@@ -458,8 +469,9 @@ EOS
       end #seleniumを動かす条件判定ここまで
 
 
-      # 23時かどうかを調べて自動報告用のbot起動
-      if Setting.find(1)[:suspension] && hnow == Time.parse("9:00") then
+      # 設定時かどうかを調べて自動報告用のbot起動
+      bottime = bottime + ":00"
+      if Setting.find(1)[:suspension] && hnow == Time.parse(bottime) then
 
         # bot準備
 
