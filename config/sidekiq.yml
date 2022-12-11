@@ -1,4 +1,4 @@
 :schedule:
   call_execute:
-    cron: '0 36 * * * *'
+    cron: '0 46 * * * *'
     class: CallExecuteJob

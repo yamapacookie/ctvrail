@@ -433,6 +433,8 @@ EOS
                   
                   # データベースに再接続
                   ActiveRecord::Base.establish_connection
+                  p '以下の動画の状態表示が必要'
+                  p Clist.find(19).title
                   
                   idlist.each do |d|
 
@@ -447,6 +449,9 @@ EOS
                     end # if Clist.find_by
                   end # idlist.each
                 end # idlist.any?
+
+                p Clist.find(19).status
+                
               end # if dllist.any?
 
             end # pcknum > 0
