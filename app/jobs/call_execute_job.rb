@@ -384,7 +384,7 @@ EOS
 
             end #登録終了
 
-            # 再生不可能な動画リストの取得し、無効に変更
+            # 再生不可能な動画リストを取得し、無効に変更
             if driver.find_elements(:xpath, "//div[@class='alert alert-danger']").any? then
             d = driver.find_elements(:xpath, "//div[@class='alert alert-danger']")
             ary = []
@@ -425,7 +425,7 @@ EOS
 
                 end
 
-                puts "無効な動画のID一覧"
+                puts "以下は無効な動画のID一覧です"
                 p idlist
 
                 # idリストからデータベースを検索、該当項目の生存を無効に変更
