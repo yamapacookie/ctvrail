@@ -228,6 +228,8 @@ EOS
           puts "下記は補正枠の配列化データです"
           p uptem
 
+          ActiveRecord::Base.establish_connection
+
           # 動画データベースからランダムにアドレスとタグの二次元配列呼び出し
           ary = Clist.where.not(available: false).pluck(:address,:tag)
 
@@ -457,7 +459,7 @@ EOS
 
 
       # 23時かどうかを調べて自動報告用のbot起動
-      if Setting.find(1)[:suspension] && hnow == Time.parse("8:00") then
+      if Setting.find(1)[:suspension] && hnow == Time.parse("9:00") then
 
         # bot準備
 
