@@ -17,7 +17,7 @@ class CallExecuteJob < ApplicationJob
       bot_chan = ENV['BOT_COMMENT_CHANNEL'] # Botの報告するチャンネル先
       tagtemp1 = Tagtemp.find(1) # 制限タグ
       uptemp1 = Uptemp.find(1) #補正タグ
-      bottime = "11" #botの起動時間
+      bottime = "12" #botの起動時間
       ENV['TZ'] = "Asia/Tokyo"  # タイムゾーン設定
 
       require 'time'
@@ -471,6 +471,9 @@ EOS
 
       # 設定時かどうかを調べて自動報告用のbot起動
       bottime = bottime + ":00"
+      # データベースに再接続
+      ActiveRecord::Base.establish_connection
+      
       if Setting.find(1)[:suspension] && hnow == Time.parse(bottime) then
 
         # bot準備
