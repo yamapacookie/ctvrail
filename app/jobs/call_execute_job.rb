@@ -117,8 +117,8 @@ class CallExecuteJob < ApplicationJob
 
           end #checkcal定義終了
 
-          # 表示に時間がかかるので長めに40秒待機
-          sleep 40
+          # 表示に時間がかかるので長めに30秒待機
+          sleep 30
 
           # 設定日、設定時間かのチェック
           check = checkcal(intrvl,hour)
@@ -370,8 +370,8 @@ EOS
 
             driver.execute_script(scriptQueue)
 
-            # おそらくcytubeが動画登録に1秒間隔なので余裕を持って1.5秒設定
-            sleep 1.5
+            # おそらくcytubeが動画登録に1秒間隔なので余裕を持って1.2秒設定
+            sleep 1.2
 
             end
 
@@ -461,7 +461,7 @@ EOS
         rescue #失敗時の保険用のリトライ
 
           puts "なんらかのエラーで弾かれてるので再度登録を行おうとしています"
-          sleep 50
+          sleep 30
           puts "リトライを行います"
 
           retry
