@@ -586,5 +586,10 @@ EOS
 
       end #bot終了
 
+      puts '全作業を終了します'
+
+      # メモリ解放のためpuma再起動
+      system("bundle exec pumactl restart")
+
     end
 end
