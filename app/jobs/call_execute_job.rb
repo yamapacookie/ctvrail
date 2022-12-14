@@ -592,5 +592,6 @@ EOS
       # メモリ解放のためrails再起動
       system("bundle exec bin/rails restart")
 
+      puts 'これが表示されてると再起動できてない？'
     end
 end
