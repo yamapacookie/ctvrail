@@ -590,7 +590,7 @@ EOS
       sleep 10
 
       # メモリ解放のためrails再起動
-      system("bundle exec bin/rails restart")
+      system("bundle exec rails restart")
 
       puts 'これが表示されてると再起動できてない？'
     end
