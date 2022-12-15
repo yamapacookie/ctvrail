@@ -587,6 +587,10 @@ EOS
       end #bot終了
 
       puts '全作業を終了し、pumaを再起動します。'
+      sleep 10
+
+      # メモリ解放のためrails再起動
+      system("bundle exec rails restart")
 
     end
 end
