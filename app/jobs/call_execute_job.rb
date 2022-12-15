@@ -590,7 +590,7 @@ EOS
       sleep 10
 
       # メモリ解放のためrails再起動
-      system("kill -9 1")
+      system("bundle exec rails restart")
 
     end
 end
