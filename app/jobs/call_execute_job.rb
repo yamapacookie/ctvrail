@@ -1,5 +1,6 @@
 class CallExecuteJob < ApplicationJob
     def perform
+      process_fork do
       
       # 起動メッセージ
       puts "定期実行を開始します"
@@ -593,4 +594,33 @@ EOS
       system("bundle exec rails restart")
 
     end
+    end
+
+    # メモリ節約のためのクラス
+    def process_fork
+      # tracking if the op failed for the Process exit
+      config = ActiveRecord::Base.remove_connection
+      pid = Process.fork do
+        begin
+          ActiveRecord::Base.establish_connection(config)
+  
+          # This is needed to re-initialize the random number generator after forking (if you want diff random numbers generated in the forks)
+          srand
+  
+          # Run the closure passed to the fork_with_new_connection method
+          yield
+  
+        rescue Exception => exception
+          puts ("Forked operation failed with exception: " + exception)
+        ensure
+          ActiveRecord::Base.remove_connection
+          Process.exit!
+        end
+      end
+      ActiveRecord::Base.establish_connection(config)
+  
+      #return the process id
+      Process.waitpid pid
+    end
+
 end
