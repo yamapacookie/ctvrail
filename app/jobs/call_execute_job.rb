@@ -590,7 +590,7 @@ EOS
       sleep 10
 
       # メモリ解放のためrails再起動
-      system("bundle exec pumactl --help")
+      system("bundle exec pumactl restart")
 
     end
 end
