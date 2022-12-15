@@ -29,4 +29,6 @@ RUN bundle install
 
 COPY . /app
 
+RUN mkdir -p tmp/pids
+
 CMD ["bundle", "exec", "sidekiq"]
