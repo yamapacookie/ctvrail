@@ -593,8 +593,8 @@ EOS
       # メモリ解放のためrails再起動
       system("bundle exec rails restart")
 
-    end
-    end
+    end #precess_fork
+    end #perform
 
     # メモリ節約のためのクラス
     def process_fork
