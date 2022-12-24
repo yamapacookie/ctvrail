@@ -591,7 +591,7 @@ EOS
       sleep 10
 
       # メモリ解放のためrails再起動
-      system("docker ps")
+      system("bundle exec docker ps")
       system("bundle exec rails restart")
 
     end #precess_fork
