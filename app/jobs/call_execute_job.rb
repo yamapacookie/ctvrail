@@ -473,6 +473,7 @@ EOS
 
       # 設定時かどうかを調べて自動報告用のbot起動
       bottime = bottime + ":00"
+      
       # データベースに再接続
       ActiveRecord::Base.connection.close
       ActiveRecord::Base.establish_connection
@@ -591,12 +592,12 @@ EOS
       sleep 10
 
       # メモリ解放のためrails再起動
-      system("bundle exec rails restart")
+      # system("bundle exec rails restart")
 
     end #precess_fork
     end #perform
 
-    # メモリ節約のためのクラス
+    # メモリ節約のためのメソッド
     def process_fork
       # tracking if the op failed for the Process exit
       config = ActiveRecord::Base.remove_connection
