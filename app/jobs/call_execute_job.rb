@@ -383,11 +383,13 @@ EOS
             # DBコネクションを一旦切っておく
             ActiveRecord::Base.connection.close
 
-            end #登録終了
+            end #登録作業終了
 
-            # 再生不可能な動画リストを取得し、無効に変更
+            # 再生不可能な動画リストのため、アラートの動画リストを取得
             if driver.find_elements(:xpath, "//div[@class='alert alert-danger']").any? then
             d = driver.find_elements(:xpath, "//div[@class='alert alert-danger']")
+
+            # リストを定義
             ary = []
             dllist = []
             idlist = []
@@ -426,11 +428,12 @@ EOS
 
                 end
 
+                # ログ確認用のシステムメッセージ
                 puts "以下は無効な動画のID一覧です"
                 p idlist
 
-                # idリストからデータベースを検索、該当項目の生存を無効に変更
-                if idlist.any? then
+                # idリストが存在し100以下の場合、データベースを検索、該当項目の生存を無効に変更
+                if idlist.any? && idlist.size < 100 then
                   
                   # データベースに再接続
                   ActiveRecord::Base.connection.close
@@ -445,10 +448,12 @@ EOS
                       Clist.find_by(videoid: d).update(status: "susp2")
                     elsif Clist.find_by(videoid: d).status == "susp2"
                       Clist.find_by(videoid: d).update(available: false, status: "invalid")
-
                     end # if Clist.find_by
+
                   end # idlist.each
+
                 end # idlist.any?
+                
               end # if dllist.any?
 
             end # pcknum > 0
@@ -473,7 +478,7 @@ EOS
 
       # 設定時かどうかを調べて自動報告用のbot起動
       bottime = bottime + ":00"
-      
+
       # データベースに再接続
       ActiveRecord::Base.connection.close
       ActiveRecord::Base.establish_connection
@@ -588,10 +593,10 @@ EOS
 
       end #bot終了
 
-      puts '全作業を終了し、railsを再起動します。'
+      puts '全作業を終了します。'
       sleep 10
 
-      # メモリ解放のためrails再起動
+      # メモリ解放のためrails再起動（意味がないようなのでコメントアウト中）
       # system("bundle exec rails restart")
 
     end #precess_fork

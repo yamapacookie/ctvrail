@@ -8,7 +8,7 @@
 railway.app
 
 ## ビルダー
-Docker
+Dockerfile
 
 ## 外部サーバー
 Redis
