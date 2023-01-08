@@ -18,8 +18,10 @@ class CallExecuteJob < ApplicationJob
       bot_chan = ENV['BOT_COMMENT_CHANNEL'] # Botの報告するチャンネル先
       tagtemp1 = Tagtemp.find(1) # 制限タグ
       uptemp1 = Uptemp.find(1) #補正タグ
-      bottime = "23" #botの起動時間
+      bottime = "23" #botの起動時間（0-24時指定）
       ENV['TZ'] = "Asia/Tokyo"  # タイムゾーン設定
+      rty_cn = 0  # 登録作業の試行回数を制限
+      rty_max = 5 # 試行回数の上限
 
       require 'time'
 
@@ -467,10 +469,14 @@ EOS
         rescue #失敗時の保険用のリトライ
 
           puts "なんらかのエラーで弾かれてるので再度登録を行おうとしています"
-          sleep 30
-          puts "リトライを行います"
+          
+          # cytube側のエラーでスクリプトが永久に回り続けるのを防止
+          rty_cn += 1
 
-          retry
+          sleep 30
+          puts "#{rty_cn}回目のリトライを行います。最大#{rty_max}回行います"
+          retry if rty_cn <= rty_max
+
         end
 
       end #seleniumを動かす条件判定ここまで
