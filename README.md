@@ -21,6 +21,8 @@ Redis
 - CYTUBE_PASS
 - CYTUBE_CHANNEL
 - BOT_COMMENT_CHANNEL
+- SEND_MAIL_ADDRESS
+- MAIL_PASSWORD
 
 ## 構成
 fly.ioにフロントとデータベース立てて接続している。
