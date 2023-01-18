@@ -474,7 +474,10 @@ EOS
           rty_cn += 1
 
           sleep 30
-          puts "#{rty_cn}回目のリトライを行います。最大#{rty_max}回行います"
+          
+          if rty_cn < 6
+            puts "#{rty_cn}回目のリトライを行います。最大#{rty_max}回行います"
+          end
 
           if rty_cn > 5
             NotifyMailer.send_mail.deliver_now
