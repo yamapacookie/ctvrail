@@ -479,6 +479,7 @@ EOS
             puts "#{rty_cn}回目のリトライを行います。最大#{rty_max}回行います"
           end
 
+          # 5回以上失敗した場合、メールで通知
           if rty_cn > 5
             NotifyMailer.send_mail.deliver_now
             puts "メールでエラーを通知しました"
