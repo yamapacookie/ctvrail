@@ -23,6 +23,7 @@ Redis
 - BOT_COMMENT_CHANNEL
 - SEND_MAIL_ADDRESS
 - MAIL_PASSWORD
+- GAS_MAIL_ADDRESS
 
 ## 構成
 fly.ioにフロントとデータベース立てて接続している。
