@@ -8,7 +8,7 @@
 railway.app
 
 ## ビルダー
-Dockerfile
+Dockerfile（Nixpacks）
 
 ## 外部サーバー
 Redis
@@ -26,10 +26,13 @@ Redis
 - GAS_MAIL_ADDRESS
 
 ## 構成
-fly.ioにフロントとデータベース立てて接続している。
+fly.ioにフロントとデータベース立てて、Railway.appから接続している。
 fly.ioはVMが貧弱で、Railwayは無料枠が厳しいのでそれぞれを補うように分割した。
-こちらはredis/sidekiq/sidekiq-schedulerによる、workerとしてのみ運用。
-メモリ削減のため、process_forkというメソッドでworker実行後、forkして捨てる設定。
+こちらはredis/sidekiq/sidekiq-schedulerによる、worker（スクリプト）としてのみ運用。
+メモリ削減のため、process_forkというメソッドでworker実行後、forkして捨てる方法を用いている。
+また、登録エラーが発生した場合に備えて管理者にメールを自動で送信するシステムをいれているが
+RailsのActiveMailを使うとメモリを喰うので、Google App ScriptにGETリクエストを送って
+GASからメールを送るように設定している。
 
 ## 使い道
 定時にCytubeへランダムなプレイリストを生成し自動登録する。

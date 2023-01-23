@@ -5,12 +5,6 @@ class CallExecuteJob < ApplicationJob
       # 起動メッセージ
       puts "定期実行を開始します"
 
-      # テスト用アクセス
-      require "net/http"
-      uri = URI.parse(ENV['GAS_MAIL_ADDRESS']+"?paas=rail")
-      response = Net::HTTP.get_response(uri)
-      response.code
-
       # 初期値
       max = Setting.find(1)[:playlist] #プレイリストに登録する上限数
       channel = ENV['CYTUBE_CHANNEL']  #　Cytubeチャンネル
@@ -487,8 +481,13 @@ EOS
 
           # 5回以上失敗した場合、メールで通知
           if rty_cn > 5
-            NotifyMailer.send_mail.deliver_now
-            puts "メールでエラーを通知しました"
+
+            # GASのメール送信スクリプトにGETリクエストを送る
+            require "net/http"
+            uri = URI.parse(ENV['GAS_MAIL_ADDRESS']+"?paas=rail")
+            response = Net::HTTP.get_response(uri)
+            response.code
+
           end
 
           retry if rty_cn <= rty_max
