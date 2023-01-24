@@ -70,5 +70,4 @@ Rails.application.configure do
   config.hosts << "ctvdev-db.fly.dev"
   config.hosts << "ctvrail-production.up.railway.app"
 
-  }
 end
