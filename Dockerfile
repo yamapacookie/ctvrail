@@ -1,4 +1,4 @@
-FROM ruby:3.0
+FROM ruby:3.0.4
 ARG EnvironmentVariable
 
 # ビルド時に実行するコマンドの指定
