@@ -21,8 +21,6 @@ Redis
 - CYTUBE_PASS
 - CYTUBE_CHANNEL
 - BOT_COMMENT_CHANNEL
-- SEND_MAIL_ADDRESS
-- MAIL_PASSWORD
 - GAS_MAIL_ADDRESS
 
 ## 構成
@@ -31,7 +29,7 @@ fly.ioはVMが貧弱で、Railwayは無料枠が厳しいのでそれぞれを�
 こちらはredis/sidekiq/sidekiq-schedulerによる、worker（スクリプト）としてのみ運用。
 メモリ削減のため、process_forkというメソッドでworker実行後、forkして捨てる方法を用いている。
 また、登録エラーが発生した場合に備えて管理者にメールを自動で送信するシステムをいれているが
-RailsのActiveMailを使うとメモリを喰うので、Google App ScriptにGETリクエストを送って
+RailsのActionMailerを使うとメモリを喰うので、Google Apps ScriptにGETリクエストを送って
 GASからメールを送るように設定している。
 
 ## 使い道
