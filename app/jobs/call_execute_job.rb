@@ -619,8 +619,6 @@ EOS
 
       # メモリ解放のためrails再起動（意味がないようなのでコメントアウト中）
       # system("bundle exec rails restart")
-      # テスト記述箇所
-      system("RAILWAY_TOKEN=#{ENV['RAILWAY_TOKEN']} railway run status")
 
     end #precess_fork
     end #perform
