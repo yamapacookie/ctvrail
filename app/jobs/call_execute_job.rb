@@ -191,10 +191,10 @@ EOS
           cylist = []
           cylist = driver.find_elements(:xpath ,"//ul[@id='queue']/li/a")
 
-          # cylist配列が空ではない確認
+          # すでにプレイリストに動画が存在するかの確認
           if cylist.any? then
 
-            puts 'cylistが空ではないので、アドレスを確認します。'
+            puts 'プレイリストに登録されている動画が存在するので、アドレスを確認します。'
 
             # アドレスを取得
             cylist = cylist.map{|x| x.attribute('href')}
