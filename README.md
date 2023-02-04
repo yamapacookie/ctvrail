@@ -38,7 +38,7 @@ fly.ioはVMが貧弱で、Railwayは無料枠が厳しいのでそれぞれを�
 RailsのActionMailerを使うとメモリを喰うので、Google Apps ScriptにGETリクエストを送って
 GASからメールを送るように設定している。
 
-またメモリ削減のため、定期的にGithub Actionsで午前3時半ごろに再デプロイしている。
+またメモリ削減のため、定期的にGithub Actionsで午前3時半と午後3時半ごろに再デプロイしている。
 
 ## 使い道
 定時にCytubeへランダムなプレイリストを生成し自動登録する。

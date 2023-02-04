@@ -38,8 +38,54 @@ class CallExecuteJob < ApplicationJob
       puts "現在時間は"
       p hnow
 
+      # プレイリスト入れ替えの判定用のメソッド
+      def checkcal(interval,time)
+
+        # 初期値
+        time = time.to_s + ":00"
+        regtime = Time.parse(time)  # 設定時間
+        start_d = Date.new(Date.today.year,1,1)
+
+        # 現在時間を60分ごとの表記に変換
+        d = Time.now.to_i / 3600
+        now = Time.at(d * 3600)
+
+        # うるう年と通常年の、変数間隔の日付の配列を生成
+        if Date.today.year % 4 == 0
+
+            date = [*0..365]
+            select_d = date.select{|x|x % interval == 0 }
+            ary_d = select_d.map{|x|start_d + x}
+
+        else
+
+            date = [*0..364]
+            select_d = date.select{|x|x % interval == 0 }
+            ary_d = select_d.map{|x|start_d + x}
+
+        end
+
+        # 現在時間が、設定日と設定時間か検査
+        if ary_d.include?(Date.today) && now == regtime then
+            return true
+        else
+            return false
+        end
+
+      end #checkcal定義終了
+
+      # 設定日、設定時間か調べる
+      check = checkcal(intrvl,hour)
+
+      # 登録時間もしくは総入れ替えタイミングかのチェック
+      if check or table.include?(hnow) then
+        rgst_time = true
+      else
+        rgst_time = false
+      end
+
       # 一時停止判定と、指定時間かを判定
-      if Setting.find(1)[:suspension] && table.include?(hnow) then
+      if Setting.find(1)[:suspension] && rgst_time then
 
         # 条件判定確認用メッセージ
         puts "登録時間を満たしています"
@@ -77,54 +123,9 @@ class CallExecuteJob < ApplicationJob
           driver.navigate.to 'https://cytube.xyz/r/' + channel  # 動画ページ移動
 
           puts "登録ページに移動します"
-
-          # プレイリスト入れ替えの判定用のメソッド
-          def checkcal(interval,time)
-
-              require 'time'
-
-              # 初期値
-              time = time.to_s + ":00"
-              regtime = Time.parse(time)  # 設定時間
-              start_d = Date.new(Date.today.year,1,1)
-
-              # 現在時間を60分ごとの表記に変換
-              d = Time.now.to_i / 3600
-              now = Time.at(d * 3600)
-
-              # うるう年と通常年の、変数間隔の日付の配列を生成
-              if Date.today.year % 4 == 0
-
-                  date = [*0..365]
-                  select_d = date.select{|x|x % interval == 0 }
-                  ary_d = select_d.map{|x|start_d + x}
-
-              else
-
-                  date = [*0..364]
-                  select_d = date.select{|x|x % interval == 0 }
-                  ary_d = select_d.map{|x|start_d + x}
-
-              end
-
-              # 現在時間が、設定日と設定時間か検査
-              if ary_d.include?(Date.today) && now == regtime then
-
-                  return true
-
-              else
-
-                  return false
-
-              end
-
-          end #checkcal定義終了
-
+          
           # 表示に時間がかかるので長めに30秒待機
           sleep 30
-
-          # 設定日、設定時間かのチェック
-          check = checkcal(intrvl,hour)
 
           # もし総入れ替えの時間の場合、プレイリストをクリアする
           if check then
