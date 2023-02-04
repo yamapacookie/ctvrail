@@ -3,7 +3,9 @@ name: Auto Redeploy
 on:
   schedule:
     # 分 時 日 月 曜 UTC20時は日本時間5時
-    - cron:  '5 8 * * *'
+    - cron: '30 8 * * *'
+    - cron: '40 8 * * *'
+    - cron: '50 8 * * *'
 
 jobs:
   deploy:
