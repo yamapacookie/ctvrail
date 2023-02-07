@@ -13,10 +13,10 @@ Dockerfile（Nixpacks）
 ## 外部サーバー
 Redis
 
-## 外部サービス
-fly.io
-Google Apps Script
-Github Actions
+## 外部連携サービス
+- fly.io
+- Google Apps Script
+- Github Actions
 
 ## 環境変数
 - MALLOC_ARENA_MAX = 2

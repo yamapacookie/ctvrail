@@ -27,7 +27,6 @@ class CallExecuteJob < ApplicationJob
 
       # 時間間隔の配列産出
       hary = [*0..23].select{|h| h % inttime == 0 }
-      hary = hary.push(hour)
       tary = hary.map{|h| h.to_s + ":00"}
       table = tary.map{|t|Time.parse(t)}
 
@@ -616,7 +615,7 @@ EOS
       end #bot終了
 
       puts '全作業を終了します。'
-      sleep 10
+      sleep 5
 
       # メモリ解放のためrails再起動（意味がないようなのでコメントアウト中）
       # system("bundle exec rails restart")
