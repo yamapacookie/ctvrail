@@ -3,12 +3,12 @@ name: Auto Redeploy
 on:
   schedule:
     # 分 時 日 月 曜 日本時間から-9でUTC時間
-    - cron: '20 3 * * *'
-    - cron: '20 7 * * *'
-    - cron: '20 11 * * *'
-    - cron: '20 15 * * *'
-    - cron: '20 19 * * *'
-    - cron: '40 23 * * *'
+    - cron: '15 3 * * *'
+    - cron: '15 7 * * *'
+    - cron: '15 11 * * *'
+    - cron: '15 15 * * *'
+    - cron: '15 19 * * *'
+    - cron: '35 23 * * *'
 
 jobs:
   deploy:
@@ -31,6 +31,6 @@ jobs:
 
       - name: Deploy
         run: railway up
-        timeout-minutes: 10
+        timeout-minutes: 5
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
