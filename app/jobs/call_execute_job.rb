@@ -346,6 +346,18 @@ EOS
 
             end
 
+            # 無効動画判定のためにこの時点でYouTube動画だけ抽出しておく
+              youtube_list = []
+              playlist.each do |y|
+                if y.include? "youtube.com"
+                  id_y = y[/.*v=(.{11})$/,1]
+                  youtube_list.push(id_y)
+                end
+              end
+
+              puts "登録予定のyoutube動画の数"
+              puts youtube_list.size
+
             # 死んだ疑惑の動画を検出し、リストに加える
             playlist = playlist + suspicion
 
@@ -395,6 +407,7 @@ EOS
             ary = []
             dllist = []
             idlist = []
+            idlist_yt = []
 
             # 既に登録されてるアラートのオブジェクトを取り除く
             d.each do |d|
@@ -419,7 +432,9 @@ EOS
                 dllist.each do |l|
 
                     if l.include?("youtu.be")
-                      idlist.push(l[/youtu\.be\/(.{11})/,1])
+                      a = l[/youtu\.be\/(.{11})/,1]
+                      idlist.push(a)
+                      idlist_yt.push(a)
                     elsif l.include?("nicovideo")
                         idlist.push(l[/nicovideo.{3,10}(sm\d{1,10})/,1])
                     elsif l.include?("vimeo.com")
@@ -434,8 +449,21 @@ EOS
                 puts "以下は無効な動画のID一覧です"
                 p idlist
 
+                # 無効なYoutube動画のIDが登録しようとしたYouTubeの動画IDと完全一致するか調べる
+                boo = youtube_list - idlist_yt == [] && idlist_yt - youtube_list == []
+
+                if boo && idlist_yt > 5
+                  yt_nomatch = false
+                  puts "Youtubeの登録動画と弾かれた動画が完全一致しています。cytubeがAPI弾かれている可能性が高いです。"
+                elsif
+                  yt_nomatch = true
+                  puts "Youtubeの登録動画との一致はしていません。"
+                end
+
                 # idリストが存在し100以下の場合、データベースを検索、該当項目の生存を無効に変更
-                if idlist.any? && idlist.size < 100 then
+                if idlist.any? && idlist.size < 100 && yt_nomatch then
+                  
+                  puts "無効動画がいくつかあるので、無効化の作業を行います。"
                   
                   # データベースに再接続
                   ActiveRecord::Base.connection.close
