@@ -14,39 +14,28 @@ class CallExecuteJob < ApplicationJob
       channel = ENV['CYTUBE_CHANNEL']  #　Cytubeチャンネル
       cyid = ENV['CYTUBE_USER_ID']  # ログインID
       cypass = ENV['CYTUBE_PASS']  #　ログインパスワード
-
-      puts "cytubeのパスを設定しました"
-
       intrvl = Setting.find(1)[:intervaldays]  # プレイリスト総入れ替えする日数間隔
       hour = Setting.find(1)[:swaptime]  # プレイリスト総入れ替えする時間
       inttime = Setting.find(1)[:intervaltime] #　補充時間間隔
-
-      puts "日数の設定を確認しました"
-
       url = "https://cytube.xyz/r/" + channel # チャンネルのアドレス
       bot_token = ENV['DISCORD_BOT_TOKEN'] # Discordbotのtoken
       bot_chan = ENV['BOT_COMMENT_CHANNEL'] # Botの報告するチャンネル先
       tagtemp1 = Tagtemp.find(1) # 制限タグ
       uptemp1 = Uptemp.find(1) #補正タグ
-
-      puts "bot設定とタグ設定を確認しました"
-
       bottime = "23" #botの起動時間（0-24時指定）
       ENV['TZ'] = "Asia/Tokyo"  # タイムゾーン設定
       rty_cn = 0  # 登録作業の試行回数を制限
       rty_max = 5 # 試行回数の上限
 
-      puts "初期値を設定しました"
-
       rescue
-        puts "データベースのロードに失敗したようなので、再度接続を試します"
-        ActiveRecord::Base.connection.close
-        ActiveRecord::Base.establish_connection
+        puts "データベースへの接続ができません。fly.io側が弾いている可能性があるので仮想マシーンを再起動してください"
 
-        default_cnt += 1
+        # GASのメール送信スクリプトにGETリクエストを送る
+        require "net/http"
+        uri = URI.parse(ENV['GAS_MAIL_ADDRESS']+"?paas=flyio_kill_db")
+        response = Net::HTTP.get_response(uri)
+        response.code
 
-      retry if default_cnt < 5
-        puts "5回くらい試したけどなぜか失敗しました"
       end
 
       require 'time'
