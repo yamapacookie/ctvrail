@@ -10,22 +10,34 @@ class CallExecuteJob < ApplicationJob
       channel = ENV['CYTUBE_CHANNEL']  #　Cytubeチャンネル
       cyid = ENV['CYTUBE_USER_ID']  # ログインID
       cypass = ENV['CYTUBE_PASS']  #　ログインパスワード
+
+      puts "cytubeのパスを設定しました"
+
       intrvl = Setting.find(1)[:intervaldays]  # プレイリスト総入れ替えする日数間隔
       hour = Setting.find(1)[:swaptime]  # プレイリスト総入れ替えする時間
       inttime = Setting.find(1)[:intervaltime] #　補充時間間隔
+
+      puts "日数の設定を確認しました"
+
       url = "https://cytube.xyz/r/" + channel # チャンネルのアドレス
       bot_token = ENV['DISCORD_BOT_TOKEN'] # Discordbotのtoken
       bot_chan = ENV['BOT_COMMENT_CHANNEL'] # Botの報告するチャンネル先
       tagtemp1 = Tagtemp.find(1) # 制限タグ
       uptemp1 = Uptemp.find(1) #補正タグ
+
+      puts "bot設定とタグ設定を確認しました"
+
       bottime = "23" #botの起動時間（0-24時指定）
       ENV['TZ'] = "Asia/Tokyo"  # タイムゾーン設定
       rty_cn = 0  # 登録作業の試行回数を制限
       rty_max = 5 # 試行回数の上限
 
+      puts "初期値を設定しました"
+
       require 'time'
 
       # 時間間隔の配列産出
+      puts "時間間隔を設定します"
       hary = [*0..23].select{|h| h % inttime == 0 }
       tary = hary.map{|h| h.to_s + ":00"}
       table = tary.map{|t|Time.parse(t)}
