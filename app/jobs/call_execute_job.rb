@@ -6,6 +6,10 @@ class CallExecuteJob < ApplicationJob
       puts "定期実行を開始します"
 
       # 初期値
+
+      default_cnt = 0
+      begin
+
       max = Setting.find(1)[:playlist] #プレイリストに登録する上限数
       channel = ENV['CYTUBE_CHANNEL']  #　Cytubeチャンネル
       cyid = ENV['CYTUBE_USER_ID']  # ログインID
@@ -33,6 +37,17 @@ class CallExecuteJob < ApplicationJob
       rty_max = 5 # 試行回数の上限
 
       puts "初期値を設定しました"
+
+      rescue
+        puts "データベースのロードに失敗したようなので、再度接続を試します"
+        ActiveRecord::Base.connection.close
+        ActiveRecord::Base.establish_connection
+
+        default_cnt += 1
+
+      retry if default_cnt < 5
+        puts "5回くらい試したけどなぜか失敗しました"
+      end
 
       require 'time'
 
