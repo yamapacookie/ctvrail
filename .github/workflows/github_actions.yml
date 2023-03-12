@@ -1,9 +1,6 @@
 name: Auto Redeploy
 
 on:
-  push:
-    branches: [main]
-    
   schedule:
     # 分 時 日 月 曜 日本時間から-9でUTC時間
     - cron: '15 3 * * *'
