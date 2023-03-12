@@ -7,7 +7,6 @@ class CallExecuteJob < ApplicationJob
 
       # 初期値
 
-      default_cnt = 0
       begin
 
       max = Setting.find(1)[:playlist] #プレイリストに登録する上限数
