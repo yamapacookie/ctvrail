@@ -8,29 +8,12 @@ on:
     - cron: '15 11 * * *'
     - cron: '15 15 * * *'
     - cron: '15 19 * * *'
+    - cron: '50 21 * * *'
     - cron: '35 23 * * *'
 
 jobs:
-  deploy:
+  deployment:
     runs-on: ubuntu-latest
-
+    environment: production
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Use Node 18
-        uses: actions/setup-node@v1
-        with:
-          node-version: 18.x
-
-      - name: Install packages
-        run: yarn install --frozen-lockfile
-
-      - name: Install Railway
-        run: npm i -g @railway/cli
-
-      - name: Deploy
-        run: railway up
-        timeout-minutes: 5
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      - name: deploy
