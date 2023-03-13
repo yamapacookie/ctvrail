@@ -8,7 +8,7 @@ on:
     - cron: '15 11 * * *'
     - cron: '15 15 * * *'
     - cron: '15 19 * * *'
-    - cron: '30 21 * * *'
+    - cron: '48 21 * * *'
     - cron: '30 23 * * *'
 
 jobs:
@@ -31,7 +31,7 @@ jobs:
         run: npm i -g @railway/cli
 
       - name: Link Railway Project
-        run: railway link --environment ${{ secrets.ENVIRONMENT_NAME }} ${{ secrets.PROJECT H_UUID }}
+        run: railway link --environment ${{ secrets.ENVIRONMENT_NAME }} ${{ secrets.PROJECT_UUID }}
 
       - name: Link Railway Service
         run: railway service ${{ secrets.SERVICE_UUID }}
