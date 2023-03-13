@@ -8,9 +8,8 @@ on:
     - cron: '15 11 * * *'
     - cron: '15 15 * * *'
     - cron: '15 19 * * *'
-    - cron: '50 21 * * *'
+    - cron: '30 21 * * *'
     - cron: '30 23 * * *'
-    - cron: '0 2 * * *'
 
 jobs:
   deploy:
@@ -30,6 +29,12 @@ jobs:
 
       - name: Install Railway
         run: npm i -g @railway/cli
+
+      - name: Link Railway Project
+        run: railway link --environment ${{ secrets.ENVIRONMENT NAME }} ${{ secrets.PROJECT UUID }}
+
+      - name: Link Railway Service
+        run: railway service ${{ secrets.SERVICE UUID }}
 
       - name: Deploy
         run: railway up
