@@ -10,7 +10,7 @@ on:
     - cron: '15 19 * * *'
     - cron: '50 21 * * *'
     - cron: '30 23 * * *'
-    - cron: '28 1 * * *'
+    - cron: '0 2 * * *'
 
 jobs:
   deploy:
