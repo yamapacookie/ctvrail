@@ -31,10 +31,10 @@ jobs:
         run: npm i -g @railway/cli
 
       - name: Link Railway Project
-        run: railway link --environment ${{ secrets.ENVIRONMENT NAME }} ${{ secrets.PROJECT UUID }}
+        run: railway link --environment ${{ secrets.ENVIRONMENT_NAME }} ${{ secrets.PROJECT H_UUID }}
 
       - name: Link Railway Service
-        run: railway service ${{ secrets.SERVICE UUID }}
+        run: railway service ${{ secrets.SERVICE_UUID }}
 
       - name: Deploy
         run: railway up
