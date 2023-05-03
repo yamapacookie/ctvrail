@@ -24,7 +24,7 @@ class CallExecuteJob < ApplicationJob
       bottime = "23" #botの起動時間（0-24時指定）
       ENV['TZ'] = "Asia/Tokyo"  # タイムゾーン設定
       rty_cn = 0  # 登録作業の試行回数を制限
-      rty_max = 5 # 試行回数の上限
+      rty_max = 3 # 試行回数の上限
 
       rescue
         puts "データベースへの接続ができません。fly.io側が弾いている可能性があるので仮想マシーンを再起動してください"
@@ -464,8 +464,18 @@ EOS
                 puts "以下は無効な動画のID一覧です"
                 p idlist
 
+                puts "以下はboo前のエラー確認のための変数確認です"
+                p youtube_list
+                p idlist_yt
+
                 # 無効なYoutube動画のIDが登録しようとしたYouTubeの動画IDと完全一致するか調べる
                 boo = youtube_list - idlist_yt == [] && idlist_yt - youtube_list == []
+
+                # エラー確認のために変数の確認
+                puts "以下はboo後の変数の確認です"
+                p boo
+                p youtube_list
+                p idlist_yt
 
                 if boo && idlist_yt > 5
                   yt_nomatch = false
@@ -518,12 +528,12 @@ EOS
 
           sleep 30
           
-          if rty_cn < 6
+          if rty_cn < 4
             puts "#{rty_cn}回目のリトライを行います。最大#{rty_max}回行います"
           end
 
-          # 5回以上失敗した場合、メールで通知
-          if rty_cn > 5
+          # 3回以上失敗した場合、メールで通知
+          if rty_cn > 3
 
             # GASのメール送信スクリプトにGETリクエストを送る
             require "net/http"
