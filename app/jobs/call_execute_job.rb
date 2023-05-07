@@ -435,8 +435,8 @@ EOS
             if ary.any? then
               ary.each do |d|
                 d.find_elements(:tag_name, 'a').each do |a|
-                # ヘッド表示からアドレスを取得
-                dllist.push(a.attribute('href'))
+                  # ヘッド表示からアドレスを取得
+                  dllist.push(a.attribute('href'))
                 end
               end
             end
@@ -486,7 +486,7 @@ EOS
                 end
 
                 # idリストが存在し100以下の場合、データベースを検索、該当項目の生存を無効に変更
-                if idlist.any? && idlist.size < 100 && yt_nomatch then
+                if idlist.any? && idlist.size < 100 && yt_nomatch = true then
                   
                   puts "無効動画がいくつかあるので、無効化の作業を行います。"
                   
@@ -508,6 +508,36 @@ EOS
                   end # idlist.each
 
                 end # idlist.any?
+
+                # YouTubeの動画が全て弾かれていた場合の制御
+                if yt_nomatch = false then
+
+                  puts 'YouTube動画の登録が全て弾かれたので、自動登録をオフにし、Discordに連絡します'
+
+                  # データベースに再接続
+                  ActiveRecord::Base.connection.close
+                  ActiveRecord::Base.establish_connection
+
+                  # botの自動登録を一時停止に切り替え
+                  Setting.find(1).update(suspension: false)
+                  puts 'botの自動登録をオフにしました'
+
+                  # discordbotによる一時停止の告知メッセージ
+                  require 'discordrb'
+                  bot = Discordrb::Bot.new token:bot_token
+
+                  msg = "Cytube内でYouTubeの動画の登録が出来ない状況を検知し、自動登録を一時停止に切り替えました。
+                  運営の方は、しばらくしてYouTube動画の登録が可能になったのを確認して、登録所の自動登録を有効化してください"
+
+                  bot.send_message(ENV['BOT_WARN_CHANNEL'], msg)
+
+                  puts 'Discordに自動登録をオフにしたメッセージを送りました'
+
+                  return
+
+                  bot.run
+
+                end # if yt_nomatch
                 
               end # if dllist.any?
 
