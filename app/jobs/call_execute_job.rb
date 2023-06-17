@@ -488,7 +488,7 @@ EOS
                 puts yt_nomatch
 
                 # idリストが存在し100以下の場合、データベースを検索、該当項目の生存を無効に変更
-                if idlist.any? && idlist.size < 100 && yt_nomatch = true then
+                if idlist.any? && idlist.size < 100 && yt_nomatch then
                   
                   puts "無効動画がいくつかあるので、無効化の作業を行います。"
                   
@@ -512,7 +512,7 @@ EOS
                 end # idlist.any?
 
                 # YouTubeの動画が全て弾かれていた場合の制御
-                if yt_nomatch = false then
+                if !yt_nomatch then
 
                   puts 'YouTube動画の登録が全て弾かれたので、自動登録をオフにし、Discordに連絡します'
 
