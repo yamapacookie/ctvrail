@@ -477,7 +477,7 @@ EOS
                 p youtube_list
                 p idlist_yt
 
-                if boo && idlist_yt > 5
+                if boo && idlist_yt.length > 5
                   yt_nomatch = false
                   puts "Youtubeの登録動画と弾かれた動画が完全一致しています。cytubeがAPI弾かれている可能性が高いです。"
                 elsif
