@@ -485,6 +485,8 @@ EOS
                   puts "Youtubeの登録動画との一致はしていません。"
                 end
 
+                puts yt_nomatch
+
                 # idリストが存在し100以下の場合、データベースを検索、該当項目の生存を無効に変更
                 if idlist.any? && idlist.size < 100 && yt_nomatch = true then
                   
