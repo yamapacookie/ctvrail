@@ -116,14 +116,17 @@ class CallExecuteJob < ApplicationJob
           puts 'seleniumを起動します'
           require 'selenium-webdriver'
 
+          puts 'selenium起動テスト1'
           options = Selenium::WebDriver::Chrome::Options.new
           options.add_argument('--headless')
           options.add_argument('--no-sandbox')
           options.add_argument('--disable-dev-shm-usage')
           driver = Selenium::WebDriver.for :chrome, options: options
 
+          puts 'selenium起動テスト2'
+
           # ログインに移行
-          puts "cytubeにアクセスを開始します"
+          puts 'cytubeにアクセスを開始します'
           driver.navigate.to 'https://cytube.mm428.net/login' # ログインページ
 
           # 表示待機時間
