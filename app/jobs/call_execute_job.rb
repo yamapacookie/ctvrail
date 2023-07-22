@@ -16,7 +16,7 @@ class CallExecuteJob < ApplicationJob
       intrvl = Setting.find(1)[:intervaldays]  # プレイリスト総入れ替えする日数間隔
       hour = Setting.find(1)[:swaptime]  # プレイリスト総入れ替えする時間
       inttime = Setting.find(1)[:intervaltime] #　補充時間間隔
-      url = "https://cytube.xyz/r/" + channel # チャンネルのアドレス
+      url = "https://cytube.mm428.net/r/" + channel # チャンネルのアドレス
       bot_token = ENV['DISCORD_BOT_TOKEN'] # Discordbotのtoken
       bot_chan = ENV['BOT_COMMENT_CHANNEL'] # Botの報告するチャンネル先
       tagtemp1 = Tagtemp.find(1) # 制限タグ
@@ -119,7 +119,7 @@ class CallExecuteJob < ApplicationJob
           options.add_argument('--disable-dev-shm-usage')
           driver = Selenium::WebDriver.for :chrome, options: options
 
-          driver.navigate.to 'https://cytube.xyz/login' # ログインページ
+          driver.navigate.to 'https://cytube.mm428.net/login' # ログインページ
 
           # 表示待機時間
           wait = Selenium::WebDriver::Wait.new(:timeout => 10)
@@ -134,7 +134,7 @@ class CallExecuteJob < ApplicationJob
 
           puts "ログインしました"
 
-          driver.navigate.to 'https://cytube.xyz/r/' + channel  # 動画ページ移動
+          driver.navigate.to url  # 動画ページ移動
 
           puts "登録ページに移動します"
           
