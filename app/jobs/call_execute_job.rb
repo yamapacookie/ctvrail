@@ -5,6 +5,21 @@ class CallExecuteJob < ApplicationJob
     # 起動メッセージ
     puts "定期実行を開始します"
 
+      # selenium初期設定
+      require 'selenium-webdriver'
+
+      options = Selenium::WebDriver::Chrome::Options.new
+      options.add_argument('--headless')
+      options.add_argument('--no-sandbox')
+      options.add_argument('--disable-dev-shm-usage')
+      driver = Selenium::WebDriver.for :chrome, options: options
+
+      puts 'yahooにアクセスします'
+
+      driver.navigate.to 'https://www.yahoo.co.jp/' # ログインページ
+
+      puts 'yahooにアクセスしました'
+
     # 初期値
 
     begin
