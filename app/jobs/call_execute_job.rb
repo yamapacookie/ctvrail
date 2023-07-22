@@ -127,7 +127,7 @@ class CallExecuteJob < ApplicationJob
 
           # ログインに移行
           puts 'cytubeにアクセスを開始します'
-          driver.navigate.to 'https://cytube.mm428.net/login' # ログインページ
+          driver.navigate.to 'https://www.yahoo.co.jp/' # ログインページ
 
           # 表示待機時間
           wait = Selenium::WebDriver::Wait.new(:timeout => 10)
