@@ -119,6 +119,8 @@ class CallExecuteJob < ApplicationJob
           options.add_argument('--disable-dev-shm-usage')
           driver = Selenium::WebDriver.for :chrome, options: options
 
+          # ログインに移行
+          puts "cytubeにアクセスを開始します"
           driver.navigate.to 'https://cytube.mm428.net/login' # ログインページ
 
           # 表示待機時間
