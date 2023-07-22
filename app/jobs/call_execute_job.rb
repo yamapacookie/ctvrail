@@ -105,7 +105,7 @@ class CallExecuteJob < ApplicationJob
         puts "登録時間を満たしています"
 
         #失敗した場合の保険
-        begin
+        # begin
 
           # DBコネクションを一旦切っておく
           puts 'DBを一旦切断します'
@@ -559,7 +559,7 @@ EOS
 
           driver.quit # ブラウザ終了
 
-        rescue #失敗時の保険用のリトライ
+        # rescue #失敗時の保険用のリトライ
 
           puts "なんらかのエラーで弾かれてるので再度登録を行おうとしています"
           
@@ -583,9 +583,9 @@ EOS
 
           end
 
-          retry if rty_cn <= rty_max
+        #  retry if rty_cn <= rty_max
 
-        end
+        # end
 
       end #seleniumを動かす条件判定ここまで
 
