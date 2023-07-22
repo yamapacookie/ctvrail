@@ -108,9 +108,12 @@ class CallExecuteJob < ApplicationJob
         begin
 
           # DBコネクションを一旦切っておく
+          puts 'DBを一旦切断します'
           ActiveRecord::Base.connection.close
 
           # selenium初期設定
+
+          puts 'seleniumを起動します'
           require 'selenium-webdriver'
 
           options = Selenium::WebDriver::Chrome::Options.new
